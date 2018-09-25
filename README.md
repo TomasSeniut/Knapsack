@@ -9,27 +9,35 @@ This instruction will help you to install and run this solver.
 ### Prerequisites
 
 `C` compiler supporting `OpenMP`
+
 ```cmake``` 
+
 `python3` if you want to generate random problems
 
 ### Building
 
 1. Create directory for build files. 
-```mkdir debug-build```
+
+```$ mkdir debug-build```
 
 2. Enter the directory.
-```cd debug-build```
+
+```$ cd debug-build```
 
 3. Run `cmake`
-```cmake ../```
+
+```$ cmake ../```
 
 For release build run 
-```cmake -DCMAKE_BUILD_TYPE=Release ../```
+
+```$ cmake -DCMAKE_BUILD_TYPE=Release ../```
 
 4. Run `Makefile`
-```make```
+
+```$ make```
 
 ### Running 
 
 To run build application call executable and pass file with problem data.
-```./Knapsack ../kanpsack_data/knapsack_12.out```
+
+```$ ./Knapsack ../kanpsack_data/knapsack_12.out```
