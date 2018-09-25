@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
     for (int i = 0; i < params.items; ++i) {
         printf("%d:%d ", i, knapsack.taken[i]);
     }
-    printf("\n  ");
+    printf("\n");
 
     return 0;
 }
