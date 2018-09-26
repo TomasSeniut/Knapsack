@@ -30,11 +30,11 @@ int main(int argc, char* argv[]) {
     printf("It took %f seconds for algorithm.\n", duration);
 
     printf("Solution from B&B:\n Knapsack price: %d, weight: %d\n", knapsack.state.price, knapsack.state.weight);
-    printf("Taken items: ");
+    printf("Taken items:");
     for (int i = 0; i < params.items; ++i) {
-        printf("%d:%d ", i, knapsack.taken[i]);
+        printf(" %d:%d", i, knapsack.taken[i]);
     }
-    printf("\n  ");
+    printf("\n");
 
     return 0;
 }
