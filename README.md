@@ -40,4 +40,4 @@ For release build run
 
 To run build application call executable and pass file with problem data.
 
-```$ ./Knapsack ../kanpsack_data/knapsack_12.out```
+```$ ./Knapsack ../knapsack_data/knapsack_12.out```
