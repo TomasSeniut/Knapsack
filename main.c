@@ -17,24 +17,24 @@ int main(int argc, char* argv[]) {
 
     knapsack_global params = ReadGlobalData(dataFileName);
 
-    Item items[params.items];
-    ReadItemsData(dataFileName, items);
+    ItemWithIntedexes items_index[params.items];
+    ReadItemsData(dataFileName, items_index);
 
-    qsort(items, (size_t) params.items, sizeof(Item), itemComparePriceWeightRatio);
+    qsort(items_index, (size_t) params.items, sizeof(ItemWithIntedexes), itemIndexComparePriceWeightRatio);
+
+    Item items[params.items];
+    int indexes[params.items];
+    CopyItemsArray(params.items, items_index, items, indexes);
+
     stack_data bestHeuristics = highestValueWeightRatio(params, items);
     printf("Best solution by heuristics:\n Knapsack price: %d, weight: %d\n", bestHeuristics.state.price, bestHeuristics.state.weight);
 
     double start = omp_get_wtime();
     stack_data knapsack = simpleBranchAndBound(bestHeuristics, params, items);
     double duration = omp_get_wtime() - start;
-    printf("It took %f seconds for algorithm.\n", duration);
+    PrintResult(params, knapsack, indexes);
 
-    printf("Solution from B&B:\n Knapsack price: %d, weight: %d\n", knapsack.state.price, knapsack.state.weight);
-    printf("Taken items:");
-    for (int i = 0; i < params.items; ++i) {
-        printf(" %d:%d", i, knapsack.taken[i]);
-    }
-    printf("\n");
+    printf("It took %f seconds for algorithm.\n", duration);
 
     return 0;
 }

@@ -10,7 +10,8 @@
 void InitializeArray(int n, int **array);
 void InitializeAndCopyArray(int n, int *from, int **to);
 void CopyArray(int n, int from[], int to[]);
-int itemComparePriceWeightRatio(const void *a, const void *b);
+void CopyItemsArray(int n, ItemWithIntedexes from[], Item items[], int indexes[]);
+int itemIndexComparePriceWeightRatio(const void *a, const void *b);
 int itemCompareWeight(const void *a, const void *b);
 
 

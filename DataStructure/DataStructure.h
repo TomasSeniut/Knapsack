@@ -16,6 +16,12 @@ typedef struct {
 } Item;
 
 typedef struct {
+    int weight;
+    int price;
+    int index;
+} ItemWithIntedexes;
+
+typedef struct {
     Item state;
     int *taken;
 } stack_data;
