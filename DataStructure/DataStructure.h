@@ -19,7 +19,7 @@ typedef struct {
     int weight;
     int price;
     int index;
-} ItemWithIntedexes;
+} ItemWithIndex;
 
 typedef struct {
     Item state;

@@ -17,10 +17,10 @@ int main(int argc, char* argv[]) {
 
     knapsack_global params = ReadGlobalData(dataFileName);
 
-    ItemWithIntedexes items_index[params.items];
+    ItemWithIndex items_index[params.items];
     ReadItemsData(dataFileName, items_index);
 
-    qsort(items_index, (size_t) params.items, sizeof(ItemWithIntedexes), itemIndexComparePriceWeightRatio);
+    qsort(items_index, (size_t) params.items, sizeof(ItemWithIndex), itemIndexComparePriceWeightRatio);
 
     Item items[params.items];
     int indexes[params.items];

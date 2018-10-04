@@ -22,14 +22,14 @@ knapsack_global ReadGlobalData(const char *fileName)
     return params;
 }
 
-void ReadItemsData(const char *fileName, ItemWithIntedexes items[])
+void ReadItemsData(const char *fileName, ItemWithIndex items[])
 {
     FILE *fp;
     fp = fopen(fileName, "r");
 
     char buffer[255];
 
-    int i = 0, a;
+    int i = 0;
     while (!feof (fp)) {
         fgets(buffer, 255, fp);
 
@@ -52,5 +52,5 @@ void PrintResult(knapsack_global params, stack_data solution, int correctIndexes
         int index = correctIndexes[i];
         printf(" %d:%d", index, solution.taken[i]);
     }
-    printf("\n"); // rez: [0, 2, 3, 4, 6, 7, 8, 9, 10, 11] //missing [1, 5
+    printf("\n");
 }

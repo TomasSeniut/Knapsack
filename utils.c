@@ -27,7 +27,7 @@ void InitializeAndCopyArray(int n, int *from, int **to) {
     }
 }
 
-void CopyItemsArray(int n, ItemWithIntedexes from[], Item items[], int indexes[])
+void CopyItemsArray(int n, ItemWithIndex from[], Item items[], int indexes[])
 {
     for (int i = 0; i < n; ++i) {
         items[i].price = from[i].price;
@@ -38,8 +38,8 @@ void CopyItemsArray(int n, ItemWithIntedexes from[], Item items[], int indexes[]
 
 int itemIndexComparePriceWeightRatio(const void *a, const void *b)
 {
-    ItemWithIntedexes item1 = * ( (ItemWithIntedexes*) a );
-    ItemWithIntedexes item2 = * ( (ItemWithIntedexes*) b );
+    ItemWithIndex item1 = * ( (ItemWithIndex*) a );
+    ItemWithIndex item2 = * ( (ItemWithIndex*) b );
 
     double r1 = (double)item1.price / item1.weight;
     double r2 = (double)item2.price / item2.weight;

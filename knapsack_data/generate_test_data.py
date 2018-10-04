@@ -6,7 +6,7 @@ parser = argparse.ArgumentParser(description='Generate test data for Knapsack pr
 parser.add_argument('N', type=int, help='Number of items')
 parser.add_argument('s', type=int, help='Weight knapsack can hold')
 parser.add_argument('-v', type=float, default=0.4, help='Maximum weight of one item in relation to knapsack size')
-parser.add_argument('-o', type=str, help='output destination')
+parser.add_argument('-o', type=str, help='output file name')
 
 args = parser.parse_args()
 
