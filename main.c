@@ -1,10 +1,11 @@
-#include <stdio.h>
-#include <stdlib.h>
+//
+// Created by tomas on 18.9.23.
+//
+
 #include <omp.h>
-#include "DataStructure/DataStructure.h"
-#include "Algorithm/algorithms.h"
+#include <stdio.h>
 #include "IO/IO.h"
-#include "utils.h"
+#include "Algorithm/algorithms.h"
 
 int main(int argc, char* argv[]) {
 

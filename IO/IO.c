@@ -36,7 +36,7 @@ void ReadItemsData(const char *fileName, ItemWithIndex items[])
         if (buffer[0] == '#')
             continue;
 
-        sscanf(buffer, "%d %d %d", &(items[i].index), &(items[i].weight), &(items[i].price));
+        sscanf(buffer, "%d %d %d\n", &(items[i].index), &(items[i].weight), &(items[i].price));
         i++;
     }
 

@@ -35,31 +35,11 @@ stack_data simpleBranchAndBound(stack_data knowResult, knapsack_global params, I
 
         for (int i = 0; i < params.items; ++i) {
 
-            if (problem.taken[i] == 1)
+            if (problem.taken[i])
                 continue;
 
-            //Check if leaf
-            int weight = problem.state.weight + items[i].weight;
-            if (weight >= params.weight)
-            {
-                if (weight == params.weight)
-                {
-                    problem.state.weight = weight;
-                    problem.state.price += items[i].price;
-                    problem.taken[i] = 1;
-                }
-
-                if (best.state.price < problem.state.price) {
-                    best.state.price = problem.state.price;
-                    best.state.weight = problem.state.weight;
-                    CopyArray(params.items, problem.taken, best.taken);
-                }
-
-                continue;
-            }
-
-            int knapsackBound = geKnapsackBound(params, items, problem);
-            if (knapsackBound < best.state.price) {
+            int weight = problem.state.weight + params.items[i].weight;
+            if (weight > params.weight) {
                 continue;
             }
 
@@ -68,6 +48,23 @@ stack_data simpleBranchAndBound(stack_data knowResult, knapsack_global params, I
             subProblem.state.price = problem.state.price + items[i].price;
             InitializeAndCopyArray(params.items, problem.taken, &subProblem.taken);
             subProblem.taken[i] = 1;
+
+            if (CanNotAddMoreItems(params, subProblem.taken, subProblem.state.weight))
+            {
+                if (best.state.price < subProblem.state.price) {
+                    printf("Better solution found: %d\n", subProblem.state.price);
+                    best.state.price = subProblem.state.price;
+                    best.state.weight = subProblem.state.weight;
+                    CopyArray(params.count, subProblem.taken, best.taken);
+                }
+
+                continue;
+            }
+
+            int knapsackBound = geKnapsackBound(params, subProblem);
+            if (knapsackBound < best.state.price) {
+                continue;
+            }
 
             stack = push(stack, subProblem);
         }
@@ -86,6 +83,8 @@ int geKnapsackBound(knapsack_global params, Item *items, stack_data problem) {
             continue;
         }
 
+        int weight = running.weight + params.items[i].weight;
+
         if (running.weight + items[i].weight >= params.weight) {
             float factor = (float)(params.weight - running.weight) / items[i].weight;
 
@@ -98,4 +97,19 @@ int geKnapsackBound(knapsack_global params, Item *items, stack_data problem) {
     }
 
     return running.price;
+}
+
+int CanNotAddMoreItems(knapsack_global params, const int taken[], int currentWeight)
+{
+    for (int i = 0; i < params.count; ++i) {
+        if (taken[i]) {
+            continue;
+        }
+
+        if (currentWeight + params.items[i].weight <= params.weight) {
+            return 0;
+        }
+    }
+
+    return 1;
 }
