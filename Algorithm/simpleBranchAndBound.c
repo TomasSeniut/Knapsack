@@ -2,9 +2,7 @@
 // Created by tomas on 18.9.22.
 //
 
-#include <stddef.h>
 #include <stdlib.h>
-#include <zconf.h>
 #include <stdio.h>
 #include "../DataStructure/DataStructure.h"
 #include "../utils.h"
@@ -99,7 +97,7 @@ int geKnapsackBound(knapsack_global params, Item *items, stack_data problem) {
     return running.price;
 }
 
-int CanNotAddMoreItems(knapsack_global params, const int taken[], int currentWeight)
+static int CanNotAddMoreItems(knapsack_global params, const int taken[], int currentWeight)
 {
     for (int i = 0; i < params.count; ++i) {
         if (taken[i]) {

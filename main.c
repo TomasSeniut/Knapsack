@@ -37,5 +37,7 @@ int main(int argc, char* argv[]) {
 
     printf("It took %f seconds for algorithm.\n", duration);
 
+    PrintResult(params, knapsack);
+
     return 0;
 }

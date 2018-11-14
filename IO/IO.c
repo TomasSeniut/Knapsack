@@ -46,7 +46,7 @@ void ReadItemsData(const char *fileName, ItemWithIndex items[])
 
 void PrintResult(knapsack_global params, stack_data solution, int correctIndexes[])
 {
-    printf("Solution from B&B:\n Knapsack price: %d, weight: %d\n", solution.state.price, solution.state.weight);
+    printf("Knapsack price: %d, weight: %d\n", solution.state.price, solution.state.weight);
     printf("Taken items:");
     for (int i = 0; i < params.items; ++i) {
         int index = correctIndexes[i];
