@@ -18,22 +18,11 @@ int main(int argc, char* argv[]) {
 
     knapsack_global params = ReadGlobalData(dataFileName);
 
-    ItemWithIndex items_index[params.items];
-    ReadItemsData(dataFileName, items_index);
-
-    qsort(items_index, (size_t) params.items, sizeof(ItemWithIndex), itemIndexComparePriceWeightRatio);
-
-    Item items[params.items];
-    int indexes[params.items];
-    CopyItemsArray(params.items, items_index, items, indexes);
-
-    stack_data bestHeuristics = highestValueWeightRatio(params, items);
-    printf("Best solution by heuristics:\n Knapsack price: %d, weight: %d\n", bestHeuristics.state.price, bestHeuristics.state.weight);
+    stack_data bestHeuristics = highestValueWeightRatio(params);
 
     double start = omp_get_wtime();
-    stack_data knapsack = simpleBranchAndBound(bestHeuristics, params, items);
+    stack_data knapsack = simpleBranchAndBound(bestHeuristics, params);
     double duration = omp_get_wtime() - start;
-    PrintResult(params, knapsack, indexes);
 
     printf("It took %f seconds for algorithm.\n", duration);
 

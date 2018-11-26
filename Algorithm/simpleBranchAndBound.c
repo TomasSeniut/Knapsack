@@ -7,22 +7,23 @@
 #include "../DataStructure/DataStructure.h"
 #include "../utils.h"
 
-int geKnapsackBound(knapsack_global params, Item *items, stack_data problem);
+static int geKnapsackBound(knapsack_global params, stack_data problem);
+static int CanNotAddMoreItems(knapsack_global params, const int taken[], int currentWeight);
 
-stack_data simpleBranchAndBound(stack_data knowResult, knapsack_global params, Item *items)
+stack_data simpleBranchAndBound(stack_data knowResult, knapsack_global params)
 {
     Item start = { 0, 0 };
 
     stack_data best;
     best.state = knowResult.state;
-    InitializeAndCopyArray(params.items, knowResult.taken, &best.taken);
+    InitializeAndCopyArray(params.count, knowResult.taken, &best.taken);
 
     stack_node *stack = NULL;
     init(stack);
 
     stack_data initProblem;
     initProblem.state = start;
-    InitializeArray(params.items, &initProblem.taken);
+    InitializeArray(params.count, &initProblem.taken);
 
     stack = push(stack, initProblem);
 
@@ -31,7 +32,7 @@ stack_data simpleBranchAndBound(stack_data knowResult, knapsack_global params, I
         stack_data problem;
         stack = pop(stack, &problem);
 
-        for (int i = 0; i < params.items; ++i) {
+        for (int i = 0; i < params.count; ++i) {
 
             if (problem.taken[i])
                 continue;
@@ -43,8 +44,8 @@ stack_data simpleBranchAndBound(stack_data knowResult, knapsack_global params, I
 
             stack_data subProblem;
             subProblem.state.weight = weight;
-            subProblem.state.price = problem.state.price + items[i].price;
-            InitializeAndCopyArray(params.items, problem.taken, &subProblem.taken);
+            subProblem.state.price = problem.state.price + params.items[i].price;
+            InitializeAndCopyArray(params.count, problem.taken, &subProblem.taken);
             subProblem.taken[i] = 1;
 
             if (CanNotAddMoreItems(params, subProblem.taken, subProblem.state.weight))
@@ -73,25 +74,25 @@ stack_data simpleBranchAndBound(stack_data knowResult, knapsack_global params, I
     return best;
 }
 
-int geKnapsackBound(knapsack_global params, Item *items, stack_data problem) {
+static int geKnapsackBound(knapsack_global params, stack_data problem) {
     Item running = problem.state;
 
-    for (int i = 0; i < params.items; ++i) {
-        if (problem.taken[i] == 1) {
+    for (int i = 0; i < params.count; ++i) {
+        if (problem.taken[i]) {
             continue;
         }
 
         int weight = running.weight + params.items[i].weight;
 
-        if (running.weight + items[i].weight >= params.weight) {
-            float factor = (float)(params.weight - running.weight) / items[i].weight;
+        if (weight >= params.weight) {
+            float factor = (float)(params.weight - running.weight) / params.items[i].weight;
 
-            running.price += (int)(factor * items[i].price);
+            running.price += (int)(factor * params.items[i].price);
             break;
         }
 
-        running.price += items[i].price;
-        running.weight += items[i].weight;
+        running.weight = weight;
+        running.price += params.items[i].price;
     }
 
     return running.price;

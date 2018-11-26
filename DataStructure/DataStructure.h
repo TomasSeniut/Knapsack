@@ -6,11 +6,6 @@
 #define KNAPSACK_DATASTRUCTURE_H
 
 typedef struct {
-    int items;
-    int weight;
-} knapsack_global;
-
-typedef struct {
     int weight;
     int price;
 } Item;
@@ -20,6 +15,13 @@ typedef struct {
     int price;
     int index;
 } ItemWithIndex;
+
+typedef struct {
+    int count;
+    int weight;
+    Item *items;
+    int *originalIndexes;
+} knapsack_global;
 
 typedef struct {
     Item state;

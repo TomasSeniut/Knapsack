@@ -8,8 +8,7 @@
 #include "../DataStructure/DataStructure.h"
 
 knapsack_global ReadGlobalData(const char *fileName);
-void ReadItemsData(const char *fileName, ItemWithIndex items[]);
-void PrintResult(knapsack_global params, stack_data solution, int correctIndexes[]);
+void PrintResult(knapsack_global params, stack_data solution);
 
 
 #endif //KNAPSACK_IO_H
