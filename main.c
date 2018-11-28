@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
     stack_data bestHeuristics = highestValueWeightRatio(params);
 
     double start = omp_get_wtime();
-    stack_data knapsack = simpleBranchAndBound(bestHeuristics, params);
+    stack_data knapsack = parallelBranchAndBound(bestHeuristics, params);
     double duration = omp_get_wtime() - start;
 
     printf("It took %f seconds for algorithm.\n", duration);

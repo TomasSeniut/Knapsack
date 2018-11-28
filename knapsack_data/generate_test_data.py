@@ -6,15 +6,22 @@ import os
 
 parser = argparse.ArgumentParser(description='Generate test data for Knapsack problem.')
 parser.add_argument('N', type=int, help='Number of items')
-parser.add_argument('-s', type=int, default=100, help='Weight knapsack can hold')
-parser.add_argument('-v', type=float, default=0.4, help='Maximum weight of one item in relation to knapsack size')
+parser.add_argument('-s', type=int, default=1000, help='Weight knapsack can hold')
 parser.add_argument('-o', type=str, help='output file name')
 
 args = parser.parse_args()
 
-weight = np.random.randint(1, int(args.v * args.s) + 1, args.N)
+max_weight = int(4. * float(args.s) / float(args.N))
+if max_weight < 100:
+    fac = 100 / max_weight
+    max_weight = 100
+    args.s = int(args.s * fac)
+
+weight = np.random.randint(1, max_weight, args.N)
 price = np.random.randint(1, 1000, args.N)
 indexes = np.arange(0, args.N)
+
+print(f'sum: {np.sum(weight)}')
 
 if np.sum(weight) <= args.s:
     raise ValueError("Sum of item weights are lower then knapsacks max weight")

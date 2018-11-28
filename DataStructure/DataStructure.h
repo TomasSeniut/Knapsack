@@ -25,6 +25,7 @@ typedef struct {
 
 typedef struct {
     Item state;
+    int current;
     int *taken;
 } stack_data;
 
