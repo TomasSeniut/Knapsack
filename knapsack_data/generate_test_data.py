@@ -11,11 +11,13 @@ parser.add_argument('-o', type=str, help='output file name')
 
 args = parser.parse_args()
 
-max_weight = int(4. * float(args.s) / float(args.N))
+max_weight = 4. * float(args.s) / float(args.N)
 if max_weight < 100:
     fac = 100 / max_weight
     max_weight = 100
     args.s = int(args.s * fac)
+else:
+    max_weight = int(max_weight)
 
 weight = np.random.randint(1, max_weight, args.N)
 price = np.random.randint(1, 1000, args.N)
