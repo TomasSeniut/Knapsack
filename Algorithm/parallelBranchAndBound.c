@@ -6,13 +6,15 @@
 #include <stdio.h>
 #include <omp.h>
 #include "../DataStructure/DataStructure.h"
-#include "../utils.h"
 #include "../DataStructure/ParallelStack.h"
+#include "../utils.h"
 
 static int geKnapsackBound(knapsack_global params, stack_data problem, int current);
 
+int NotAllItemsAdded(int itemCount, int currentItem);
+
 stack_data parallelBranchAndBound(stack_data knowResult, knapsack_global params) {
-    Item start = {0, 0};
+    Item start = { 0, 0 };
 
     stack_data best;
     best.state = knowResult.state;
@@ -20,6 +22,7 @@ stack_data parallelBranchAndBound(stack_data knowResult, knapsack_global params)
 
     stack_data initProblem;
     initProblem.state = start;
+    initProblem.current = -1;
     InitializeArray(params.count, &initProblem.taken);
 
     #pragma omp parallel
@@ -37,21 +40,21 @@ stack_data parallelBranchAndBound(stack_data knowResult, knapsack_global params)
                 continue;
             }
 
-            int current = ++problem.current;
+            int next = ++problem.current;
 
             // not take
             stack_data subProblemNotTaken;
             subProblemNotTaken.state.weight = problem.state.weight;
             subProblemNotTaken.state.price = problem.state.price;
-            subProblemNotTaken.current = current;
+            subProblemNotTaken.current = next;
             InitializeAndCopyArray(params.count, problem.taken, &subProblemNotTaken.taken);
-            subProblemNotTaken.taken[current] = 0;
+            subProblemNotTaken.taken[next] = 0;
 
             if (best.state.price < subProblemNotTaken.state.price) {
                 #pragma omp critical
                 {
                     if (best.state.price < subProblemNotTaken.state.price) {
-                        //printf("Better solution found: %d\n", subProblemNotTaken.state.price);
+                        printf("Better solution found: %d\n", subProblemNotTaken.state.price);
                         best.state.price = subProblemNotTaken.state.price;
                         best.state.weight = subProblemNotTaken.state.weight;
                         CopyArray(params.count, subProblemNotTaken.taken, best.taken);
@@ -59,29 +62,31 @@ stack_data parallelBranchAndBound(stack_data knowResult, knapsack_global params)
                 }
             }
 
-            int knapsackBoundNoTaken = geKnapsackBound(params, subProblemNotTaken, current);
-            if (best.state.price < knapsackBoundNoTaken && current <= params.count - 1) {
+            int knapsackBoundNoTaken = geKnapsackBound(params, subProblemNotTaken, next);
+            if (best.state.price < knapsackBoundNoTaken && NotAllItemsAdded(params.count, next)) {
                 pushParallel(subProblemNotTaken);
             }
 
             // take
-            int weight = problem.state.weight + params.items[current].weight;
+            int weight = problem.state.weight + params.items[next].weight;
             if (weight > params.weight) {
+                free(problem.taken);
+
                 continue;
             }
 
             stack_data subProblemTaken;
             subProblemTaken.state.weight = weight;
-            subProblemTaken.state.price = problem.state.price + params.items[current].price;
-            subProblemTaken.current = current;
+            subProblemTaken.state.price = problem.state.price + params.items[next].price;
+            subProblemTaken.current = next;
             InitializeAndCopyArray(params.count, problem.taken, &subProblemTaken.taken);
-            subProblemTaken.taken[current] = 1;
+            subProblemTaken.taken[next] = 1;
 
             if (best.state.price < subProblemTaken.state.price) {
                 #pragma omp critical
                 {
                     if (best.state.price < subProblemTaken.state.price) {
-                        //printf("Better solution found: %d\n", subProblemTaken.state.price);
+                        printf("Better solution found: %d\n", subProblemTaken.state.price);
                         best.state.price = subProblemTaken.state.price;
                         best.state.weight = subProblemTaken.state.weight;
                         CopyArray(params.count, subProblemTaken.taken, best.taken);
@@ -89,8 +94,8 @@ stack_data parallelBranchAndBound(stack_data knowResult, knapsack_global params)
                 }
             }
 
-            int knapsackBoundTaken = geKnapsackBound(params, subProblemTaken, current);
-            if (best.state.price < knapsackBoundTaken && current <= params.count - 1) {
+            int knapsackBoundTaken = geKnapsackBound(params, subProblemTaken, next);
+            if (best.state.price < knapsackBoundTaken && NotAllItemsAdded(params.count, next)) {
                 pushParallel(subProblemTaken);
             }
 
@@ -103,6 +108,14 @@ stack_data parallelBranchAndBound(stack_data knowResult, knapsack_global params)
     destroyStack();
 
     return best;
+}
+
+int NotAllItemsAdded(int itemCount, int currentItem) {
+    if (currentItem + 1 <= itemCount) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 static int geKnapsackBound(knapsack_global params, stack_data problem, int current) {

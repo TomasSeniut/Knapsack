@@ -11,7 +11,6 @@ int isEmptyParallel();
 void pushParallel(stack_data data);
 int popParallel(stack_data *data);
 void initStackParallel();
-int isWorkingFlagged();
 void destroyStack();
 
 #endif //KNAPSACK_PARALLELSTACK_H

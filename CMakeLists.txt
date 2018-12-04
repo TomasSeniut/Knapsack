@@ -14,7 +14,7 @@ set(SOURCE_FILES Algorithm/algorithms.h
         IO/IO.h
         main.c
         utils.c
-        utils.h Algorithm/parallelBranchAndBound.c DataStructure/ParallelStack.c DataStructure/ParallelStack.h)
+        utils.h Algorithm/parallelBranchAndBound.c DataStructure/ParallelStack.c DataStructure/ParallelStack.h DataStructure/LinkedStack.h)
 
 add_executable(Knapsack ${SOURCE_FILES})
 
