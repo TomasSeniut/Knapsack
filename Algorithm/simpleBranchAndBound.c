@@ -1,7 +1,3 @@
-//
-// Created by tomas on 18.9.22.
-//
-
 #include <stdlib.h>
 #include <stdio.h>
 #include "../DataStructure/DataStructure.h"
@@ -12,17 +8,12 @@ static int geKnapsackBound(knapsack_global params, stack_data problem, int curre
 
 stack_data simpleBranchAndBound(stack_data knowResult, knapsack_global params)
 {
-    Item start = { 0, 0 };
-
-    stack_data best;
-    best.state = knowResult.state;
-    InitializeAndCopyArray(params.count, knowResult.taken, &best.taken);
-
     stack_node *stack = NULL;
     init(stack);
 
     stack_data initProblem;
-    initProblem.state = start;
+    initProblem.weight = 0;
+    initProblem.price = 0;
     initProblem.current = -1;
     InitializeArray(params.count, &initProblem.taken);
 
@@ -37,57 +28,51 @@ stack_data simpleBranchAndBound(stack_data knowResult, knapsack_global params)
 
         // not take
         stack_data subProblemNotTaken;
-        subProblemNotTaken.state.weight = problem.state.weight;
-        subProblemNotTaken.state.price = problem.state.price;
+        subProblemNotTaken.weight = problem.weight;
+        subProblemNotTaken.price = problem.price;
         subProblemNotTaken.current = next;
         InitializeAndCopyArray(params.count, problem.taken, &subProblemNotTaken.taken);
         subProblemNotTaken.taken[next] = 0;
 
-        if (best.state.price < subProblemNotTaken.state.price) {
-            printf("Better solution found: %d\n", subProblemNotTaken.state.price);
-            best.state.price = subProblemNotTaken.state.price;
-            best.state.weight = subProblemNotTaken.state.weight;
-            CopyArray(params.count, subProblemNotTaken.taken, best.taken);
-        }
-
         int knapsackBoundNoTaken = geKnapsackBound(params, subProblemNotTaken, next);
-        if (best.state.price < knapsackBoundNoTaken && next <= params.count - 1) {
+        if (knowResult.price < knapsackBoundNoTaken && next <= params.count - 1) {
             stack = push(stack, subProblemNotTaken);
         }
 
         // take
-        int weight = problem.state.weight + params.items[next].weight;
+        int weight = problem.weight + params.items[next].weight;
         if (weight > params.weight) {
             continue;
         }
 
         stack_data subProblemTaken;
-        subProblemTaken.state.weight = weight;
-        subProblemTaken.state.price = problem.state.price + params.items[next].price;
+        subProblemTaken.weight = weight;
+        subProblemTaken.price = problem.price + params.items[next].price;
         subProblemTaken.current = next;
         InitializeAndCopyArray(params.count, problem.taken, &subProblemTaken.taken);
         subProblemTaken.taken[next] = 1;
 
-        if (best.state.price < subProblemTaken.state.price) {
-            printf("Better solution found: %d\n", subProblemTaken.state.price);
-            best.state.price = subProblemTaken.state.price;
-            best.state.weight = subProblemTaken.state.weight;
-            CopyArray(params.count, subProblemTaken.taken, best.taken);
+        if (knowResult.price < subProblemTaken.price) {
+            printf("Better solution found: %d\n", subProblemTaken.price);
+            knowResult.price = subProblemTaken.price;
+            knowResult.weight = subProblemTaken.weight;
+            CopyArray(params.count, subProblemTaken.taken, knowResult.taken);
         }
 
         int knapsackBoundTaken = geKnapsackBound(params, subProblemTaken, next);
-        if (best.state.price < knapsackBoundTaken && next <= params.count - 1) {
+        if (knowResult.price < knapsackBoundTaken && next <= params.count - 1) {
             stack = push(stack, subProblemTaken);
         }
 
         free(problem.taken);
     }
 
-    return best;
+    return knowResult;
 }
 
 static int geKnapsackBound(knapsack_global params, stack_data problem, int current) {
-    Item running = problem.state;
+    Item running = { .weight = problem.weight, .price = problem.price};
+
 
     for (int i = 0; i < params.count; ++i) {
         if (i <= current) {

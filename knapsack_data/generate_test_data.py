@@ -23,8 +23,6 @@ weight = np.random.randint(1, max_weight, args.N)
 price = np.random.randint(1, 1000, args.N)
 indexes = np.arange(0, args.N)
 
-print(f'sum: {np.sum(weight)}')
-
 if np.sum(weight) <= args.s:
     raise ValueError("Sum of item weights are lower then knapsacks max weight")
 

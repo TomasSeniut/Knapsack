@@ -1,7 +1,3 @@
-//
-// Created by tomas on 18.11.14.
-//
-
 #ifndef KNAPSACK_PARALLELSTACK_H
 #define KNAPSACK_PARALLELSTACK_H
 

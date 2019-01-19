@@ -1,11 +1,6 @@
-//
-// Created by tomas on 18.9.22.
-//
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "DataStructure.h"
-
 
 void init(stack_node* head)
 {
@@ -23,6 +18,7 @@ stack_node* push(stack_node* head, stack_data data)
     tmp->data = data;
     tmp->next = head;
     head = tmp;
+
     return head;
 }
 
@@ -32,6 +28,7 @@ stack_node* pop(stack_node *head, stack_data *element)
     *element = head->data;
     head = head->next;
     free(tmp);
+
     return head;
 }
 

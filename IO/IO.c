@@ -1,7 +1,3 @@
-//
-// Created by tomas on 18.9.20.
-//
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "../DataStructure/DataStructure.h"
@@ -58,7 +54,7 @@ void ReadItemsData(FILE *fp, ItemWithIndex items[])
 
 void PrintResult(knapsack_global params, stack_data solution)
 {
-    printf("Knapsack price: %d, weight: %d\n", solution.state.price, solution.state.weight);
+    printf("Knapsack price: %d, weight: %d\n", solution.price, solution.weight);
     printf("Taken items:");
     for (int i = 0; i < params.count; ++i) {
         int index = params.originalIndexes[i];

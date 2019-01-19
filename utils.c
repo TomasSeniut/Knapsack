@@ -1,11 +1,7 @@
-//
-// Created by tomas on 18.9.23.
-//
-
 #include <stdlib.h>
 #include "DataStructure/DataStructure.h"
 
-void InitializeArray(int n, int ** array) {
+void InitializeArray(int n, char ** array) {
     *array = malloc(n * sizeof(int));
 
     for (int i = 0; i < n; ++i) {
@@ -13,14 +9,14 @@ void InitializeArray(int n, int ** array) {
     }
 }
 
-void CopyArray(int n, int from[], int to[]) {
+void CopyArray(int n, const char from[], char to[]) {
     for (int i = 0; i < n; ++i) {
         to[i] = from[i];
     }
 }
 
-void InitializeAndCopyArray(int n, int *from, int **to) {
-    *to = malloc(n * sizeof(int));
+void InitializeAndCopyArray(int n, const char *from, char **to) {
+    *to = malloc(n * sizeof(char));
 
     for (int i = 0; i < n; ++i) {
         (*to)[i] = from[i];

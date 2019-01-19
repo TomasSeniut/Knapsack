@@ -1,7 +1,3 @@
-//
-// Created by tomas on 18.9.20.
-//
-
 #ifndef KNAPSACK_IO_H
 #define KNAPSACK_IO_H
 

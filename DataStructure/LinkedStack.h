@@ -1,7 +1,3 @@
-//
-// Created by tomas on 18.12.4.
-//
-
 #ifndef KNAPSACK_LINKEDSTACK_H
 #define KNAPSACK_LINKEDSTACK_H
 

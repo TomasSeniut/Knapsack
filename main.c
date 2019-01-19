@@ -1,7 +1,3 @@
-//
-// Created by tomas on 18.9.23.
-//
-
 #include <omp.h>
 #include <stdio.h>
 #include "IO/IO.h"
@@ -21,7 +17,7 @@ int main(int argc, char* argv[]) {
     stack_data bestHeuristics = highestValueWeightRatio(params);
 
     double start = omp_get_wtime();
-    stack_data knapsack = parallelBranchAndBound(bestHeuristics, params);
+    stack_data knapsack = hybridBranchAndBound(bestHeuristics, params);
     double duration = omp_get_wtime() - start;
 
     printf("It took %f seconds for algorithm.\n", duration);

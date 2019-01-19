@@ -1,7 +1,3 @@
-//
-// Created by tomas on 18.11.14.
-//
-
 #include <stdlib.h>
 #include <omp.h>
 #include <stdio.h>
@@ -17,7 +13,7 @@ static volatile int *_workFlags;
 void initStackParallel() {
     _head = NULL;
 
-    _numberOfThreads = omp_get_num_threads();
+    _numberOfThreads = omp_get_max_threads();
 
     _workFlags = (int *) malloc(sizeof(int) * _numberOfThreads);
     for (int i = 0; i < _numberOfThreads; ++i) {

@@ -1,7 +1,3 @@
-//
-// Created by tomas on 18.9.20.
-//
-
 #ifndef KNAPSACK_DATASTRUCTURE_H
 #define KNAPSACK_DATASTRUCTURE_H
 
@@ -24,9 +20,10 @@ typedef struct {
 } knapsack_global;
 
 typedef struct {
-    Item state;
+    int weight;
+    int price;
     int current;
-    int *taken;
+    char *taken;
 } stack_data;
 
 typedef struct stack_node stack_node;
